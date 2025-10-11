@@ -1,8 +1,10 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
+import { computed, ref } from 'vue';
+
 
 defineProps({
-  xAxisLabel: String || Number,
-  xAxisValue: String || Number
+  xAxisValue: String || Number,
+  yAxisValue: String || Number
 })
 
 const inputGroupData = [
@@ -13,7 +15,8 @@ const inputGroupData = [
     },
     input: {
       type: 'text',
-      id: 'x-axis'
+      id: 'x-axis',
+      model: () => defineModel()
     }
   },
   {
@@ -23,20 +26,30 @@ const inputGroupData = [
     },
     input: {
       type: 'text',
-      id: 'y-axis'
+      id: 'y-axis',
+      model: () => defineModel()
     }
   }
 ]
+
+const chartValues = computed({
+
+})
+function addChartValue(value: string) {
+  // if (!inputModel) return
+  chartValues.value.push({ inputModel: value })
+  console.log({ inputModel: value })
+}
 
 </script>
 
 <template>
   <section>
     <form>
-      <div class="input-group" v-for="item in inputGroupData">
-        <label :for="item.label.for">{{ item.label.content }}</label>
-        <input :type="item.input.type" :id="item.input.id">
-        <button class="btn">Add</button>
+      <div class="input-group" v-for="item, i in inputGroupData" :key="item.label.for">
+        <label :for="item.label.for" :key="i">{{ item.label.content }}</label>
+        <input v-model="item.input.model" :type="item.input.type" :id="item.input.id" :key="item.input.id">
+        <button type="button" @click="addChartValue(item.input.model as any)" class="btn">Add</button>
       </div>
     </form>
     <button class="btn">Generate Chart</button>
@@ -68,4 +81,4 @@ label {
   gap: 10px;
   grid-template-columns: 2fr 8fr 2fr;
 }
-</style>
+</style> -->
