@@ -1,20 +1,31 @@
 <script setup lang="ts">
-import { Chart, registerables, Colors } from 'chart.js';
-import { onMounted, ref } from 'vue';
+import { getChartData } from '@/composables/handleChartData';
+import { Chart, registerables, Colors, Chart as ChartType } from 'chart.js';
+import { ref } from 'vue';
 let chartModel = ref<HTMLCanvasElement | null>(null)
+let chartInstance = ref<InstanceType<typeof Chart> | null>(null)
+const { chartData } = getChartData()
+
 
 Chart.register(...registerables, Colors)
-onMounted(() => {
+
+function showKeys() {
+  const keys = Object.keys(chartData.value)
+  const values = Object.values(chartData.value)
+  const refKeys = ref(keys)
+  const refValues = ref(values)
+
+
   if (!chartModel.value) return
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
-    new Chart(ctx, {
+    const newChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: [...refKeys.value],
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
+          label: 'My chart',
+          data: [...refValues.value],
           borderWidth: 1,
         }]
       },
@@ -40,11 +51,13 @@ onMounted(() => {
         }
       }
     });
+    chartInstance.value = newChart
   }
-  console.log(ctx)
-})
+}
 </script>
 
 <template>
+  <button @click="showKeys" class="btn">Generate Chart</button>
+  <button @click="() => { chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</button>
   <canvas ref="chartModel" id="chart" width="600" height="600"></canvas>
 </template>

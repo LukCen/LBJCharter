@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
-const chartData = ref([])
+export const chartData = ref<{ x: string | number, y: string | number }[]>([])
 
-const getChartData = () => {
+export const getChartData = () => {
   return { chartData }
 }

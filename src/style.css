@@ -80,6 +80,10 @@ input {
   border: 1px solid #fff;
 }
 
+.btn-delete-entry {
+  background: #d33c3c
+}
+
 canvas {
   z-index: 100;
 }
