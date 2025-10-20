@@ -5,8 +5,20 @@ import ChartDataForm from './components/ChartDataForm.vue';
 </script>
 
 <template>
-  <ChartDataForm />
-  <ChartCanvas />
+  <main>
+    <h1>VueCharter - charting made easy!</h1>
+    <p>VueCharter is a simple chart making tool, using ChartJS to create beautiful and descriptive charts via the Canvas element. Currently supports bar charts!</p>
+    <ChartDataForm />
+    <ChartCanvas />
+  </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+
+}
+</style>

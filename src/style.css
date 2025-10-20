@@ -3,6 +3,7 @@
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
   box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
 }
 /* 2. Remove default margin */
 * {
@@ -50,6 +51,7 @@ h1, h2, h3, h4, h5, h6 {
 /* project css start */
 
 body {
+  font-family: inherit;
   min-height: 100vh;
   background: #bdc3c7;
   /* fallback for old browsers */
@@ -71,8 +73,12 @@ button, a {
 
 input {
   padding: 5px 10px 5px 10px;
+    border: 2px solid lightblue;
 }
+input:focus {
 
+  outline: 2px solid blue;
+}
 .btn {
   padding: 10px 30px 10px 30px;
   text-align: center;
