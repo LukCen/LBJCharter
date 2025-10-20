@@ -10,29 +10,26 @@ const { chartData } = getChartData()
 Chart.register(...registerables, Colors)
 
 function showKeys() {
-  const keys = Object.keys(chartData.value)
   const values = Object.values(chartData.value)
-  const refKeys = ref(keys)
   const refValues = ref(values)
 
 
   if (!chartModel.value) return
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
+    console.log(refValues.value)
     const newChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: [...refKeys.value],
         datasets: [{
           label: 'My chart',
           data: [...refValues.value],
-          borderWidth: 1,
+          borderWidth: 3
         }]
       },
       options: {
         scales: {
           y: {
-            beginAtZero: true,
             ticks: {
               color: "#fff"
             }

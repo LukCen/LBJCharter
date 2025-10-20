@@ -64,7 +64,6 @@ body {
   align-items: center;
   padding: 40px;
   color: #fff;
-  text-shadow: 0px 0px 5px #000;
 }
 
 button, a {
@@ -76,7 +75,6 @@ input {
     border: 2px solid lightblue;
 }
 input:focus {
-
   outline: 2px solid blue;
 }
 .btn {
@@ -92,4 +90,14 @@ input:focus {
 
 canvas {
   z-index: 100;
+  max-height: 600px;
+  max-width: 600px;
+}
+
+
+.text-gradient {
+background: #FF0000;
+background: linear-gradient(to left, #FF0000 0%, #FFFF00 50%, #FF0000 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
