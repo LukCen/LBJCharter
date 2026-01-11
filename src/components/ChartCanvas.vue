@@ -26,13 +26,14 @@ Chart.register(...registerables, Colors, chartBg)
 function showKeys() {
   const values = Object.values(chartData.value)
   const refValues = ref(values)
-
+  const chartType = localStorage.getItem('chart') || 'bar'
 
   if (!chartModel.value) return
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
     console.log(refValues.value)
     const newChart = new Chart(ctx, {
+      // @ts-ignore
       type: 'bar',
       data: {
         datasets: [{
@@ -83,11 +84,12 @@ function downloadFile() {
   link.download = `chart-${Date.now()}.png`
   link.click()
 }
+
 </script>
 
 <template>
   <button @click="showKeys" class="btn">Generate Chart</button>
   <button @click="() => { chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</button>
-  <Button @click="downloadFile">Download chart</Button>
+  <Button class="bg-cyan-600 hover:bg-cyan-500 hover:text-gray-800" @click="downloadFile">Download chart</Button>
   <canvas ref="chartModel" id="chart" width="600" height="600"></canvas>
 </template>
