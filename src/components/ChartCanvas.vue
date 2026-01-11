@@ -2,12 +2,26 @@
 import { getChartData } from '@/composables/handleChartData';
 import { Chart, registerables, Colors, Chart as ChartType } from 'chart.js';
 import { ref } from 'vue';
+import Button from './ui/button/Button.vue';
 let chartModel = ref<HTMLCanvasElement | null>(null)
 let chartInstance = ref<InstanceType<typeof Chart> | null>(null)
 const { chartData } = getChartData()
 
+// custom plugin for changing the chart background
+const chartBg = {
+  id: 'chart-bg',
+  beforeDraw: (chart: Chart) => {
+    const { ctx } = chart;
+    ctx.save()
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#333333'
+    ctx.fillRect(0, 0, chart.width, chart.height)
+    ctx.restore()
+  }
+}
 
-Chart.register(...registerables, Colors)
+
+Chart.register(...registerables, Colors, chartBg)
 
 function showKeys() {
   const values = Object.values(chartData.value)
@@ -46,15 +60,34 @@ function showKeys() {
             enabled: true
           }
         }
+
       }
     });
     chartInstance.value = newChart
   }
+}
+
+function downloadFile() {
+  // early return - prevents runtime errors if chart hasnt yet been generated
+  if (!chartInstance.value) return
+
+
+  // get canvas from instance and not the ref (??)
+  const c = chartInstance.value.canvas
+  const dataUrl = c.toDataURL('image/png')
+
+  // create an anchor element, make sure its hidden and programmatically click it to trigger download
+  const link = document.createElement('a')
+  link.href = dataUrl
+  link.classList.add('hidden')
+  link.download = `chart-${Date.now()}.png`
+  link.click()
 }
 </script>
 
 <template>
   <button @click="showKeys" class="btn">Generate Chart</button>
   <button @click="() => { chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</button>
+  <Button @click="downloadFile">Download chart</Button>
   <canvas ref="chartModel" id="chart" width="600" height="600"></canvas>
 </template>

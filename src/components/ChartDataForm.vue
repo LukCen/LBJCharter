@@ -52,11 +52,34 @@ function addChartValue() {
       </div>
       <button @click="addChartValue" type="button" class="btn">Add</button>
       <ul class="chart-entries">
-        <li class="chart-entry" v-for="item in chartData">
-          <span>{{ item.x }}</span>
-          <span>{{ item.y }}</span>
-          <button type="button" class="btn btn-delete-entry">Delete item</button>
-        </li>
+        <table>
+          <colgroup>
+            <col style="width: 25%">
+            <col style="width: 25%">
+            <col style="width: 25%">
+            <col style="width: 25%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th colspan="1">Values in X axis</th>
+              <th colspan="1">Values in Y axis</th>
+              <th colspan="2">Additional options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- cheat table row to ensure the table is full sized even without values -->
+            <tr v-for="item in chartData" :key="item.x">
+              <td>{{ item.x }}</td>
+              <td>{{ item.y }}</td>
+              <td>
+                <button type="button" class="btn btn-delete-entry">Delete item</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-delete-Edit">Edit values</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </ul>
     </form>
 
@@ -68,6 +91,7 @@ section {
   display: grid;
   place-items: center;
   gap: 20px;
+  width: 100%;
 }
 form {
   display: flex;
@@ -75,6 +99,7 @@ form {
   align-items: center;
   gap: 10px;
   margin: 0 auto;
+  min-width: 100%;
 }
 
 label {
@@ -82,6 +107,21 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+/* table */
+thead tr {
+  background: #f5f5f5;
+  color: #333;
+  text-align: center;
+}
+
+td, tr, th {
+  padding: 5px 10px;
+  border: 1px solid #f5f5f5;
+  text-align: center;
+}
+th {
+  border: 1px solid #333;
 }
 .input-group {
   display: grid;
@@ -92,10 +132,6 @@ label {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.chart-entry {
-  display: grid;
-  grid-template-columns: 3fr 3fr 3fr 3fr;
+  width: 100%;
 }
 </style>
