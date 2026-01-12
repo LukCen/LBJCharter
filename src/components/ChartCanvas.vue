@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getChartData } from '@/composables/handleChartData';
 import { Chart, registerables, Colors, Chart as ChartType } from 'chart.js';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Button from './ui/button/Button.vue';
 let chartModel = ref<HTMLCanvasElement | null>(null)
 let chartInstance = ref<InstanceType<typeof Chart> | null>(null)
@@ -28,43 +28,65 @@ function showKeys() {
   const refValues = ref(values)
   const chartType = localStorage.getItem('chart') || 'bar'
 
+  const xValues = computed(() => { return refValues.value.map((p) => p.x) })
+  const yValues = computed(() => { return refValues.value.map((p) => p.y) })
+
+  //@ts-ignore
+  console.log(xValues.value, yValues.value)
+
   if (!chartModel.value) return
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
-    console.log(refValues.value)
-    const newChart = new Chart(ctx, {
-      // @ts-ignore
-      type: 'bar',
-      data: {
-        datasets: [{
-          label: 'My chart',
-          data: [...refValues.value],
-          borderWidth: 3
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            ticks: {
-              color: "#fff"
+    if (chartType === 'pie') {
+      const newChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: [...xValues.value],
+          datasets: [{
+            label: 'Value',
+            data: [...yValues.value],
+            backgroundColor: ['#393902', '#939301', '#002299'],
+            hoverOffset: 5
+          }],
+        }
+      })
+      chartInstance.value = newChart
+    } else if (chartType === "bar") {
+
+      const newChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          datasets: [{
+            label: 'My chart',
+            data: [...refValues.value],
+            borderWidth: 3
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              ticks: {
+                color: "#fff"
+              }
+            },
+            x: {
+              ticks: {
+                color: "#fff"
+              }
             }
           },
-          x: {
-            ticks: {
-              color: "#fff"
+          color: "#fff",
+          plugins: {
+            colors: {
+              enabled: true
             }
           }
-        },
-        color: "#fff",
-        plugins: {
-          colors: {
-            enabled: true
-          }
-        }
 
-      }
-    });
-    chartInstance.value = newChart
+        }
+      });
+      chartInstance.value = newChart
+    }
+
   }
 }
 
