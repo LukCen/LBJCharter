@@ -3,6 +3,8 @@ import { getChartData } from '@/composables/handleChartData';
 import { Chart, registerables, Colors, Chart as ChartType } from 'chart.js';
 import { ref, computed } from 'vue';
 import Button from './ui/button/Button.vue';
+import { generateRandomColor } from '@/composables/generateRandomColor';
+
 let chartModel = ref<HTMLCanvasElement | null>(null)
 let chartInstance = ref<InstanceType<typeof Chart> | null>(null)
 const { chartData } = getChartData()
@@ -37,6 +39,14 @@ function showKeys() {
   if (!chartModel.value) return
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
+
+    const bgColors: string[] = []
+    for (let i = 0; i < refValues.value.length; i++) {
+      let newColor = generateRandomColor()
+      bgColors.push(newColor)
+      newColor = ''
+    }
+    // pie chart
     if (chartType === 'pie') {
       const newChart = new Chart(ctx, {
         type: 'pie',
@@ -45,14 +55,14 @@ function showKeys() {
           datasets: [{
             label: 'Value',
             data: [...yValues.value],
-            backgroundColor: ['#393902', '#939301', '#002299'],
+            backgroundColor: [...bgColors],
             hoverOffset: 5
           }],
         }
       })
       chartInstance.value = newChart
     } else if (chartType === "bar") {
-
+      // bar chart
       const newChart = new Chart(ctx, {
         type: 'bar',
         data: {
