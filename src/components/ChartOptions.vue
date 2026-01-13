@@ -22,7 +22,7 @@ function updateSelectedChart() {
   <Popover v-model:open="open">
     <PopoverTrigger as-child>
       <Button variant="secondary" role="combobox" :aria-expanded="open" class="w-[300px] justify-between capitalize">
-        {{ value || "Select a chart type" }}
+        {{ value || "Select chart type - Bar by default" }}
         <ChevronsUpDownIcon />
       </Button>
     </PopoverTrigger>

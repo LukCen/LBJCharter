@@ -38,7 +38,6 @@ function addChartValue() {
   const xValue = inputGroupData[0]?.input.value.value ?? ""
   const yValue = inputGroupData[1]?.input.value.value ?? ""
   chartData.value.push({ x: xValue, y: yValue })
-  // console.log(chartData.value)
 }
 
 </script>

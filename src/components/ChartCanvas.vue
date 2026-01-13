@@ -58,6 +58,14 @@ function showKeys() {
             backgroundColor: [...bgColors],
             hoverOffset: 5
           }],
+        },
+        options: {
+          color: "#fff",
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
         }
       })
       chartInstance.value = newChart
@@ -94,6 +102,41 @@ function showKeys() {
 
         }
       });
+      chartInstance.value = newChart
+    } else if (chartType === "line") {
+      const newChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [...xValues.value],
+          datasets: [{
+            label: 'Line chart',
+            data: [...yValues.value],
+            fill: false,
+            borderColor: '#f5f5f5',
+            tension: 0.1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              ticks: {
+                color: "#fff"
+              }
+            },
+            x: {
+              ticks: {
+                color: "#fff"
+              }
+            }
+          },
+          color: "#fff",
+          plugins: {
+            colors: {
+              enabled: true
+            }
+          }
+        }
+      })
       chartInstance.value = newChart
     }
 
