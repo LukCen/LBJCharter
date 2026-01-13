@@ -22,24 +22,145 @@ const chartBg = {
   }
 }
 
-
-Chart.register(...registerables, Colors, chartBg)
-
-function showKeys() {
-  const values = Object.values(chartData.value)
-  const refValues = ref(values)
-  const chartType = localStorage.getItem('chart') || 'bar'
+function getValuesForChart() {
+  const refValues = ref(Object.values(chartData.value))
 
   const xValues = computed(() => { return refValues.value.map((p) => p.x) })
   const yValues = computed(() => { return refValues.value.map((p) => p.y) })
 
-  //@ts-ignore
-  console.log(xValues.value, yValues.value)
+  return [xValues.value, yValues.value]
+}
+
+const valuesForChart = (type: string) => {
+  const refValues = ref(Object.values(chartData.value))
+  switch (type) {
+    case "bar":
+      return refValues.value
+    default:
+      const xValues = computed(() => { return refValues.value.map((p) => p.x) }).value
+      const yValues = computed(() => { return refValues.value.map((p) => p.y) }).value
+      return [xValues, yValues]
+  }
+}
+
+function getColorsForPieChart() {
+  const bgColors: string[] = []
+  for (let i = 0; i < ref(Object.values(chartData.value)).value.length; i++) {
+    let newColor = generateRandomColor()
+    bgColors.push(newColor)
+    newColor = ''
+  }
+  return bgColors
+}
+
+// config object for the charts - pass the 'bar', 'pie' or 'line' param to the 'type' parameter of a Chart instance
+
+
+class ChartConfig {
+  // returns a config object for a bar chart - data and options props
+  barChart() {
+    return {
+      data: {
+        datasets: [{
+          label: 'Bar Chart',
+          data: valuesForChart('bar'),
+          borderWidth: 3
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            ticks: {
+              color: "#fff"
+            }
+          },
+          x: {
+            ticks: {
+              color: "#fff"
+            }
+          }
+        }
+      }
+    }
+  }
+  pieChart() {
+    return {
+      data: {
+        // taken from the 'X axis' content - should always be a string
+        labels: valuesForChart('pie')[0],
+        datasets: [{
+          label: 'Value',
+          // taken from the 'Y axis' content - string or number
+          data: valuesForChart('pie')[1],
+          backgroundColor: getColorsForPieChart(),
+          hoverOffset: 5
+        }],
+      },
+      options: {
+        color: "#fff",
+        plugins: {
+          colors: {
+            enabled: true
+          }
+        }
+      }
+    }
+  }
+  lineChart() {
+    return {
+      data: {
+        labels: getValuesForChart()[0],
+        datasets: [{
+          label: 'Line chart',
+          data: getValuesForChart()[1],
+          fill: false,
+          borderColor: '#f5f5f5',
+          tension: 0.1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            ticks: {
+              color: "#fff"
+            }
+          },
+          x: {
+            ticks: {
+              color: "#fff"
+            }
+          }
+        },
+        color: "#fff",
+        plugins: {
+          colors: {
+            enabled: true
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+Chart.register(...registerables, Colors, chartBg)
+
+function showKeys() {
+
+  const values = Object.values(chartData.value)
+  const refValues = ref(values)
+  const chartType = localStorage.getItem('chart') || 'bar'
+
+  // NEW
+
+  const barChartInstance = new ChartConfig()
 
   if (!chartModel.value) return
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
 
+    // randomly generated colors for the pie charts
     const bgColors: string[] = []
     for (let i = 0; i < refValues.value.length; i++) {
       let newColor = generateRandomColor()
@@ -50,92 +171,25 @@ function showKeys() {
     if (chartType === 'pie') {
       const newChart = new Chart(ctx, {
         type: 'pie',
-        data: {
-          labels: [...xValues.value],
-          datasets: [{
-            label: 'Value',
-            data: [...yValues.value],
-            backgroundColor: [...bgColors],
-            hoverOffset: 5
-          }],
-        },
-        options: {
-          color: "#fff",
-          plugins: {
-            colors: {
-              enabled: true
-            }
-          }
-        }
+        // yes ill clear this up soon - this works just confuses TS due to type macarena above
+        //@ts-ignore
+        data: barChartInstance.pieChart().data,
+        options: barChartInstance.pieChart().options
       })
       chartInstance.value = newChart
     } else if (chartType === "bar") {
       // bar chart
       const newChart = new Chart(ctx, {
         type: 'bar',
-        data: {
-          datasets: [{
-            label: 'My chart',
-            data: [...refValues.value],
-            borderWidth: 3
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              ticks: {
-                color: "#fff"
-              }
-            },
-            x: {
-              ticks: {
-                color: "#fff"
-              }
-            }
-          },
-          color: "#fff",
-          plugins: {
-            colors: {
-              enabled: true
-            }
-          }
-
-        }
+        data: barChartInstance.barChart().data,
+        options: barChartInstance.barChart().options
       });
       chartInstance.value = newChart
     } else if (chartType === "line") {
       const newChart = new Chart(ctx, {
         type: 'line',
-        data: {
-          labels: [...xValues.value],
-          datasets: [{
-            label: 'Line chart',
-            data: [...yValues.value],
-            fill: false,
-            borderColor: '#f5f5f5',
-            tension: 0.1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              ticks: {
-                color: "#fff"
-              }
-            },
-            x: {
-              ticks: {
-                color: "#fff"
-              }
-            }
-          },
-          color: "#fff",
-          plugins: {
-            colors: {
-              enabled: true
-            }
-          }
-        }
+        data: barChartInstance.lineChart().data,
+        options: barChartInstance.lineChart().options
       })
       chartInstance.value = newChart
     }
@@ -146,7 +200,6 @@ function showKeys() {
 function downloadFile() {
   // early return - prevents runtime errors if chart hasnt yet been generated
   if (!chartInstance.value) return
-
 
   // get canvas from instance and not the ref (??)
   const c = chartInstance.value.canvas
