@@ -22,15 +22,9 @@ const chartBg = {
   }
 }
 
-function getValuesForChart() {
-  const refValues = ref(Object.values(chartData.value))
-
-  const xValues = computed(() => { return refValues.value.map((p) => p.x) })
-  const yValues = computed(() => { return refValues.value.map((p) => p.y) })
-
-  return [xValues.value, yValues.value]
-}
-
+// returns values to be used in the 'label' or 'data' parameter inside the Chart instance, in a format expected by different chart types
+// bar - returns an array of objects
+// rest (currently line and pie) - returns an array with two arrays inside - index 0 is X axis, index 1 is Y axis
 const valuesForChart = (type: string) => {
   const refValues = ref(Object.values(chartData.value))
   switch (type) {
@@ -43,6 +37,7 @@ const valuesForChart = (type: string) => {
   }
 }
 
+// returns an array of colors in hex format, based on how many entries the user input
 function getColorsForPieChart() {
   const bgColors: string[] = []
   for (let i = 0; i < ref(Object.values(chartData.value)).value.length; i++) {
@@ -52,9 +47,6 @@ function getColorsForPieChart() {
   }
   return bgColors
 }
-
-// config object for the charts - pass the 'bar', 'pie' or 'line' param to the 'type' parameter of a Chart instance
-
 
 class ChartConfig {
   // returns a config object for a bar chart - data and options props
@@ -83,6 +75,7 @@ class ChartConfig {
       }
     }
   }
+  // returns a config object for a pie chart - data and options props
   pieChart() {
     return {
       data: {
@@ -106,13 +99,14 @@ class ChartConfig {
       }
     }
   }
+  // returns a config object for a line chart - data and options props
   lineChart() {
     return {
       data: {
-        labels: getValuesForChart()[0],
+        labels: valuesForChart('line')[0],
         datasets: [{
           label: 'Line chart',
-          data: getValuesForChart()[1],
+          data: valuesForChart('line')[1],
           fill: false,
           borderColor: '#f5f5f5',
           tension: 0.1
@@ -188,6 +182,8 @@ function showKeys() {
     } else if (chartType === "line") {
       const newChart = new Chart(ctx, {
         type: 'line',
+        // yes ill clear this up soon - this works just confuses TS due to type macarena above
+        //@ts-ignore
         data: barChartInstance.lineChart().data,
         options: barChartInstance.lineChart().options
       })
