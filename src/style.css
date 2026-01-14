@@ -76,27 +76,6 @@ button, a {
   font-weight: bold;
 }
 
-input {
-  padding: 5px 10px 5px 10px;
-    border: 2px solid lightblue;
-}
-input:focus {
-  outline: 2px solid blue;
-}
-.btn {
-  padding: 10px 30px 10px 30px;
-  text-align: center;
-  border-radius: 10px;
-  border: 1px solid #fff;
-}
-
-.btn-delete-entry {
-  background: #b90505;
-  border: none;
-  box-shadow: 0px 0px 15px 5px #dd4545;
-  color: #FFF;
-}
-
 canvas {
   z-index: 100;
   max-height: 600px;
@@ -156,7 +135,7 @@ background: linear-gradient(to left, #eeff00 0%, #9dff00 50%, #eeff00 100%);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(53.813% 0.25306 262.229);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -164,7 +143,7 @@ background: linear-gradient(to left, #eeff00 0%, #9dff00 50%, #eeff00 100%);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: oklch(48.705% 0.18624 26.007);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);

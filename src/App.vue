@@ -7,7 +7,7 @@ import ChartOptions from './components/ChartOptions.vue';
 
 <template>
   <main>
-    <h1 class="text-gradient">VueCharter - charting made easy!</h1>
+    <h1 class="text-4xl font-bold text-gradient">VueCharter - charting made easy!</h1>
     <p>VueCharter is a simple chart making tool, using ChartJS to create beautiful and descriptive charts via the Canvas element. Currently supports bar charts!</p>
     <ChartOptions />
     <ChartDataForm />
@@ -21,6 +21,5 @@ main {
   flex-direction: column;
   gap: 20px;
   align-items: center;
-
 }
 </style>
