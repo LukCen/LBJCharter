@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { getChartData } from '@/composables/handleChartData';
 import { ref } from 'vue';
+import Table from './ui/table/Table.vue';
+import TableCaption from './ui/table/TableCaption.vue';
+import TableHeader from './ui/table/TableHeader.vue';
+import TableRow from './ui/table/TableRow.vue';
+import TableHead from './ui/table/TableHead.vue';
+import TableBody from './ui/table/TableBody.vue';
+import TableCell from './ui/table/TableCell.vue';
+import Button from './ui/button/Button.vue';
+
+
 
 const { chartData } = getChartData()
 
@@ -50,36 +60,27 @@ function addChartValue() {
         <input v-model="item.input.value.value" :type="item.input.type" :id="item.input.id" :key="item.input.id">
       </div>
       <button @click="addChartValue" type="button" class="btn">Add</button>
-      <ul class="chart-entries">
-        <table>
-          <colgroup>
-            <col style="width: 25%">
-            <col style="width: 25%">
-            <col style="width: 25%">
-            <col style="width: 25%">
-          </colgroup>
-          <thead>
-            <tr>
-              <th colspan="1">Values in X axis</th>
-              <th colspan="1">Values in Y axis</th>
-              <th colspan="2">Additional options</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- cheat table row to ensure the table is full sized even without values -->
-            <tr v-for="item in chartData" :key="item.x">
-              <td>{{ item.x }}</td>
-              <td>{{ item.y }}</td>
-              <td>
-                <button type="button" class="btn btn-delete-entry">Delete item</button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-delete-Edit">Edit values</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </ul>
+      <Table>
+        <TableCaption>Charter</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead class="w-1/4">Values in X axis</TableHead>
+            <TableHead class="w-1/4">Values in Y axis</TableHead>
+            <TableHead class="w-1/2">Additional options</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow v-for="item, index in chartData" :key="index">
+            <TableCell>{{ item.x }}</TableCell>
+            <TableCell>{{ item.y }}</TableCell>
+            <TableCell class="flex justify-center gap-4">
+              <Button class="btn-delete-entry">Delete item</Button>
+              <Button>Edit values</Button>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+
     </form>
 
   </section>
@@ -126,11 +127,5 @@ th {
   display: grid;
   gap: 10px;
   grid-template-columns: 2fr 8fr 2fr;
-}
-.chart-entries {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
 }
 </style>
