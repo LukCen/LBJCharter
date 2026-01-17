@@ -29,6 +29,9 @@ importers:
       lucide-vue-next:
         specifier: ^0.562.0
         version: 0.562.0(vue@3.5.22(typescript@5.9.3))
+      papaparse:
+        specifier: ^5.5.3
+        version: 5.5.3
       reka-ui:
         specifier: ^2.7.0
         version: 2.7.0(typescript@5.9.3)(vue@3.5.22(typescript@5.9.3))
@@ -41,6 +44,9 @@ importers:
       vue:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
+      vue-router:
+        specifier: ^4.6.4
+        version: 4.6.4(vue@3.5.22(typescript@5.9.3))
     devDependencies:
       '@tsconfig/node22':
         specifier: ^22.0.2
@@ -805,6 +811,9 @@ packages:
   '@vue/compiler-ssr@3.5.22':
     resolution: {integrity: sha512-GdgyLvg4R+7T8Nk2Mlighx7XGxq/fJf9jaVofc3IL0EPesTE86cP/8DD1lT3h1JeZr2ySBvyqKQJgbS54IX1Ww==}
 
+  '@vue/devtools-api@6.6.4':
+    resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
+
   '@vue/devtools-core@8.0.2':
     resolution: {integrity: sha512-V7eKTTHoS6KfK8PSGMLZMhGv/9yNDrmv6Qc3r71QILulnzPnqK2frsTyx3e2MrhdUZnENPEm6hcb4z0GZOqNhw==}
     peerDependencies:
@@ -1422,6 +1431,9 @@ packages:
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
+  papaparse@5.5.3:
+    resolution: {integrity: sha512-5QvjGxYVjxO59MGU2lHVYpRWBBtKHnlIAcSe1uNFCkkptUh63NFRj0FJQm7nR67puEruUci/ZkjmEFrjCAyP4A==}
+
   parse-ms@4.0.0:
     resolution: {integrity: sha512-TXfryirbmq34y8QBwgqCVLi+8oA3oWx2eAnSn62ITyEhEYaWRlVZ2DvMM9eZbMs/RfxPu/PK/aBLyGj4IrqMHw==}
     engines: {node: '>=18'}
@@ -1791,6 +1803,11 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
+
+  vue-router@4.6.4:
+    resolution: {integrity: sha512-Hz9q5sa33Yhduglwz6g9skT8OBPii+4bFn88w6J+J4MfEo4KRRpmiNG/hHHkdbRFlLBOqxN8y8gf2Fb0MTUgVg==}
+    peerDependencies:
+      vue: ^3.5.0
 
   vue-tsc@3.1.1:
     resolution: {integrity: sha512-fyixKxFniOVgn+L/4+g8zCG6dflLLt01Agz9jl3TO45Bgk87NZJRmJVPsiK+ouq3LB91jJCbOV+pDkzYTxbI7A==}
@@ -2558,6 +2575,8 @@ snapshots:
       '@vue/compiler-dom': 3.5.22
       '@vue/shared': 3.5.22
 
+  '@vue/devtools-api@6.6.4': {}
+
   '@vue/devtools-core@8.0.2(vite@7.1.9(@types/node@22.18.9)(jiti@2.6.1)(lightningcss@1.30.2))(vue@3.5.22(typescript@5.9.3))':
     dependencies:
       '@vue/devtools-kit': 8.0.2
@@ -3160,6 +3179,8 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
+  papaparse@5.5.3: {}
+
   parse-ms@4.0.0: {}
 
   parse5@7.3.0:
@@ -3525,6 +3546,11 @@ snapshots:
 
   vue-demi@0.14.10(vue@3.5.22(typescript@5.9.3)):
     dependencies:
+      vue: 3.5.22(typescript@5.9.3)
+
+  vue-router@4.6.4(vue@3.5.22(typescript@5.9.3)):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
       vue: 3.5.22(typescript@5.9.3)
 
   vue-tsc@3.1.1(typescript@5.9.3):

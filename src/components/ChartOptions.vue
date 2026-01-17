@@ -30,7 +30,8 @@ function updateSelectedChart() {
       <Command>
         <CommandList>
           <CommandGroup>
-            <CommandItem class=" capitalize" v-for="chart, idx in chartTypes" :key="idx" :value="chart" @select="() => { value = chart, open = false, updateSelectedChart() }">
+            <CommandItem class="font-medium capitalize hover:bg-primary hover:text-secondary cursor-pointer" v-for="chart, idx in chartTypes" :key="idx" :value="chart"
+              @select="() => { value = chart, open = false, updateSelectedChart() }">
               <CheckIcon :class="cn('mr-2 h-4 w-4', value === chart ? 'opacity-100' : 'opacity-0')" />
               {{ chart }}
             </CommandItem>

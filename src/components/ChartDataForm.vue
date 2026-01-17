@@ -58,12 +58,6 @@ function addChartValue() {
 <template>
   <section>
     <form>
-      <!-- <div class="input-group" v-for="item, i in inputGroupData" :key="item.label.for">
-        <label :for="item.label.for" :key="i">{{ item.label.content }}</label>
-        <input v-model="item.input.value.value" :type="item.input.type" :id="item.input.id" :key="item.input.id">
-      </div>
-      <button @click="addChartValue" type="button" class="btn">Add</button> -->
-
       <InputGroup class="max-w-1/2" v-for="item, i in inputGroupData" :key="item.label.for">
         <Label class="px-3 py-1 font-bold bg-primary h-full" :for="item.label.for" :key="i">{{ item.label.content }}</Label>
         <InputGroupInput v-model="item.input.value.value" :type="item.input.type" :id="item.input.id" :key="item.input.id" />
@@ -90,9 +84,7 @@ function addChartValue() {
           </TableRow>
         </TableBody>
       </Table>
-
     </form>
-
   </section>
 </template>
 
