@@ -19,7 +19,7 @@ const { chartData } = getChartData()
 
 defineProps({
   xAxisValue: String || Number,
-  yAxisValue: String || Number
+  yAxisValue: Number
 })
 
 const inputGroupData = [
@@ -40,7 +40,7 @@ const inputGroupData = [
       content: 'Y axis'
     },
     input: {
-      type: 'text',
+      type: 'number',
       id: 'y',
       value: ref('')
     }
@@ -78,7 +78,7 @@ function addChartValue() {
             <TableCell>{{ item.x }}</TableCell>
             <TableCell>{{ item.y }}</TableCell>
             <TableCell class="flex justify-center gap-4">
-              <Button class="btn-delete-entry">Delete item</Button>
+              <Button class="btn-delete-entry bg-destructive">Delete item</Button>
               <Button>Edit values</Button>
             </TableCell>
           </TableRow>

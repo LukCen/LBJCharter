@@ -20,12 +20,12 @@ const activeView = ref('manual')
     <p>VueCharter is a simple chart making tool, using ChartJS to create beautiful and descriptive charts via the Canvas element. Currently supports bar charts!</p>
     <ChartOptions />
     <div class="option-selector flex gap-2 w-1/2">
-      <InputGroup :class="{ 'bg-primary': activeView === 'manual' }" class="min-w-1/2 flex justify-center flex-1 border-primary">
-        <Label for="chart-manual" class="justify-center w-full">Add rows manually</Label>
+      <InputGroup :class="{ 'bg-primary': activeView === 'manual' }" class=" input-combo min-w-1/2 flex justify-center flex-1 border-primary">
+        <Label for="chart-manual" class="justify-center w-full cursor-pointer">Add rows manually</Label>
         <Input @change="activeView = 'manual'" name="radio-button" type="radio" id="chart-manual" />
       </InputGroup>
-      <InputGroup :class="{ 'bg-primary': activeView === 'upload' }" class="min-w-1/2 flex justify-center flex-1 border-primary">
-        <Label for="chart-upload" class="justify-center w-full">Upload CSV file</Label>
+      <InputGroup :class="{ 'bg-primary': activeView === 'upload' }" class=" input-combo min-w-1/2 flex justify-center flex-1 border-primary">
+        <Label for="chart-upload" class="justify-center w-full cursor-pointer">Upload CSV file</Label>
         <Input @change="activeView = 'upload'" name="radio-button" type="radio" id="chart-upload" />
       </InputGroup>
     </div>
@@ -47,5 +47,10 @@ main {
   -webkit-appearance: none;
   appearance: none;
   display: none;
+}
+
+.option-selector .input-combo:hover {
+
+  box-shadow: 0 0 15px 3px var(--color-primary);
 }
 </style>
