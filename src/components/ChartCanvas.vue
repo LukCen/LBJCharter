@@ -212,8 +212,11 @@ function downloadFile() {
 </script>
 
 <template>
-  <Button @click="showKeys" class="btn">Generate Chart</Button>
-  <Button variant="destructive" @click="() => { chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</Button>
-  <Button class="bg-cyan-600 hover:bg-cyan-500 hover:text-gray-800" @click="downloadFile">Download chart</Button>
-  <canvas ref="chartModel" id="chart" width="800" height="600" aria-label="Chart canvas"></canvas>
+  <section class="canvas-container flex flex-col gap-4 items-center">
+    <Button @click="showKeys" class="btn">Generate Chart</Button>
+    <Button variant="destructive" @click="() => { chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</Button>
+    <Button class="bg-cyan-600 hover:bg-cyan-500 hover:text-gray-800" @click="downloadFile">Download chart</Button>
+    <canvas ref="chartModel" id="chart" width="800" height="600" aria-label="Chart canvas"></canvas>
+
+  </section>
 </template>

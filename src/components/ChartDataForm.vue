@@ -56,13 +56,16 @@ function addChartValue() {
 </script>
 
 <template>
-  <section>
+  <section class="chart-data-form max-w-2/3">
     <form>
-      <InputGroup class="max-w-1/2" v-for="item, i in inputGroupData" :key="item.label.for">
-        <Label class="px-3 py-1 font-bold bg-primary h-full" :for="item.label.for" :key="i">{{ item.label.content }}</Label>
-        <InputGroupInput v-model="item.input.value.value" :type="item.input.type" :id="item.input.id" :key="item.input.id" />
-      </InputGroup>
-      <Button @click="addChartValue" type="button">Add to chart</Button>
+      <div class="input-groups flex gap-2 w-1/2">
+        <InputGroup class="max-w-1/2" v-for="item, i in inputGroupData" :key="item.label.for">
+          <Label class="px-3 py-1 font-bold bg-secondary text-foreground h-full" :for="item.label.for" :key="i">{{ item.label.content }}</Label>
+          <InputGroupInput v-model="item.input.value.value" :type="item.input.type" :id="item.input.id" :key="item.input.id" />
+        </InputGroup>
+
+      </div>
+      <Button class="bg-success text-foreground hover:bg-success hover:shadow-[0px_0px_15px_1px_var(--color-success)]" @click="addChartValue" type="button">Add to chart</Button>
 
       <Table>
         <TableHeader>
