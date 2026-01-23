@@ -17,7 +17,8 @@ const activeView = ref('manual')
 <template>
   <main>
     <h1 class="text-4xl font-bold text-gradient">VueCharter - charting made easy!</h1>
-    <p>VueCharter is a simple chart making tool, using ChartJS to create beautiful and descriptive charts via the Canvas element. Currently supports bar charts!</p>
+    <p>VueCharter is a simple chart making tool, using ChartJS to create beautiful and descriptive charts via the Canvas element. Choose between bar, line and pie charts, input your data manually or
+      from a CSV file, and generate!</p>
     <ChartOptions />
     <div class="option-selector flex gap-2 w-1/2">
       <InputGroup :class="{ 'bg-primary': activeView === 'manual' }" class=" input-combo min-w-1/2 flex justify-center flex-1 border-primary">

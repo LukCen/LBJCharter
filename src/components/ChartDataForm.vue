@@ -65,7 +65,6 @@ function addChartValue() {
       <Button @click="addChartValue" type="button">Add to chart</Button>
 
       <Table>
-        <TableCaption>Charter</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead class="w-1/4">Values in X axis</TableHead>
