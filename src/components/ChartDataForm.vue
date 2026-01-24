@@ -2,7 +2,6 @@
 import { getChartData } from '@/composables/handleChartData';
 import { ref } from 'vue';
 import Table from './ui/table/Table.vue';
-import TableCaption from './ui/table/TableCaption.vue';
 import TableHeader from './ui/table/TableHeader.vue';
 import TableRow from './ui/table/TableRow.vue';
 import TableHead from './ui/table/TableHead.vue';

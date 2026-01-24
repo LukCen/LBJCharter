@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getChartData } from '@/composables/handleChartData';
-import { Chart, registerables, Colors, Chart as ChartType } from 'chart.js';
+import { Chart, registerables, Colors, Chart as ChartType, plugins, elements } from 'chart.js';
 import { ref, computed } from 'vue';
 import Button from './ui/button/Button.vue';
 import { generateRandomColor } from '@/composables/generateRandomColor';
@@ -56,7 +56,8 @@ class ChartConfig {
         datasets: [{
           label: 'Bar Chart',
           data: valuesForChart('bar'),
-          borderWidth: 3
+          borderWidth: 1,
+          backgroundColor: getColorsForPieChart()
         }]
       },
       options: {
@@ -71,6 +72,11 @@ class ChartConfig {
               color: "#fff"
             }
           }
+        }
+      },
+      plugins: {
+        colors: {
+          enabled: true,
         }
       }
     }
@@ -108,7 +114,7 @@ class ChartConfig {
           label: 'Line chart',
           data: valuesForChart('line')[1],
           fill: false,
-          borderColor: '#f5f5f5',
+          borderColor: "#f6f6f6",
           tension: 0.1
         }]
       },
@@ -123,6 +129,15 @@ class ChartConfig {
             ticks: {
               color: "#fff"
             }
+          }
+        },
+        elements: {
+          point: {
+            radius: 8,
+            pointStyle: "circle",
+            backgroundColor: getColorsForPieChart(),
+            borderColor: "#000"
+
           }
         },
         color: "#fff",
@@ -176,7 +191,7 @@ function showKeys() {
       const newChart = new Chart(ctx, {
         type: 'bar',
         data: barChartInstance.barChart().data,
-        options: barChartInstance.barChart().options
+        options: barChartInstance.barChart().options,
       });
       chartInstance.value = newChart
     } else if (chartType === "line") {
