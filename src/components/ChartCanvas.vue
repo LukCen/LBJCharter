@@ -14,11 +14,13 @@ const chartBg = {
   id: 'chart-bg',
   beforeDraw: (chart: Chart) => {
     const { ctx } = chart;
-    ctx.save()
-    ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = '#333333'
-    ctx.fillRect(0, 0, chart.width, chart.height)
-    ctx.restore()
+    if (ctx) {
+      ctx.save()
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = '#111'
+      ctx.fillRect(0, 0, chart.width, chart.height)
+      ctx.restore()
+    }
   }
 }
 
@@ -27,14 +29,15 @@ const chartBg = {
 // rest (currently line and pie) - returns an array with two arrays inside - index 0 is X axis, index 1 is Y axis
 const valuesForChart = (type: string) => {
   const refValues = ref(Object.values(chartData.value))
-  switch (type) {
-    case "bar":
-      return refValues.value
-    default:
-      const xValues = computed(() => { return refValues.value.map((p) => p.x) }).value
-      const yValues = computed(() => { return refValues.value.map((p) => p.y) }).value
-      return [xValues, yValues]
-  }
+  // switch (type) {
+  //   case "bar":
+  //     return refValues.value
+  //   default:
+  //   }
+  const xValues = computed(() => { return refValues.value.map((p) => p.x) }).value
+  const yValues = computed(() => { return refValues.value.map((p) => p.y) }).value
+  const colorValues = computed(() => { return refValues.value.map((p) => p.color) }).value
+  return [xValues, yValues, colorValues]
 }
 
 // returns an array of colors in hex format, based on how many entries the user input
@@ -43,7 +46,6 @@ function getColorsForPieChart() {
   for (let i = 0; i < ref(Object.values(chartData.value)).value.length; i++) {
     let newColor = generateRandomColor()
     bgColors.push(newColor)
-    newColor = ''
   }
   return bgColors
 }
@@ -53,11 +55,12 @@ class ChartConfig {
   barChart() {
     return {
       data: {
+        labels: valuesForChart('bar')[0],
         datasets: [{
           label: 'Bar Chart',
-          data: valuesForChart('bar'),
+          data: valuesForChart('bar')[1],
           borderWidth: 1,
-          backgroundColor: getColorsForPieChart()
+          backgroundColor: valuesForChart('bar')[2] || "#f5f5f5"
         }]
       },
       options: {
@@ -72,11 +75,6 @@ class ChartConfig {
               color: "#fff"
             }
           }
-        }
-      },
-      plugins: {
-        colors: {
-          enabled: true,
         }
       }
     }
@@ -137,7 +135,6 @@ class ChartConfig {
             pointStyle: "circle",
             backgroundColor: getColorsForPieChart(),
             borderColor: "#000"
-
           }
         },
         color: "#fff",
@@ -152,14 +149,19 @@ class ChartConfig {
 
 }
 
-
 Chart.register(...registerables, Colors, chartBg)
 
 function showKeys() {
-
   const values = Object.values(chartData.value)
   const refValues = ref(values)
   const chartType = localStorage.getItem('chart') || 'bar'
+
+
+  const existingChart = document.querySelector('canvas')?.getContext('2d')
+  if (existingChart) {
+    const isCanvas = Chart.getChart(existingChart)
+    if (isCanvas) isCanvas.destroy()
+  }
 
   // NEW
 
@@ -174,7 +176,6 @@ function showKeys() {
     for (let i = 0; i < refValues.value.length; i++) {
       let newColor = generateRandomColor()
       bgColors.push(newColor)
-      newColor = ''
     }
     // pie chart
     if (chartType === 'pie') {
@@ -190,6 +191,7 @@ function showKeys() {
       // bar chart
       const newChart = new Chart(ctx, {
         type: 'bar',
+        //@ts-ignore
         data: barChartInstance.barChart().data,
         options: barChartInstance.barChart().options,
       });
@@ -229,7 +231,7 @@ function downloadFile() {
 <template>
   <section class="canvas-container flex flex-col gap-4 items-center">
     <Button @click="showKeys" class="btn">Generate Chart</Button>
-    <Button variant="destructive" @click="() => { chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</Button>
+    <Button variant="destructive" @click="() => { chartInstance?.clear(), chartInstance?.destroy(), chartInstance = null }" class="btn">Reset chart</Button>
     <Button class="bg-cyan-600 hover:bg-cyan-500 hover:text-gray-800" @click="downloadFile">Download chart</Button>
     <canvas ref="chartModel" id="chart" width="800" height="600" aria-label="Chart canvas"></canvas>
 

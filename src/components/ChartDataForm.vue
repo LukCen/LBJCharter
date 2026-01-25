@@ -18,7 +18,8 @@ const { chartData } = getChartData()
 
 defineProps({
   xAxisValue: String || Number,
-  yAxisValue: Number
+  yAxisValue: Number,
+  colorValue: String
 })
 
 const inputGroupData = [
@@ -43,13 +44,25 @@ const inputGroupData = [
       id: 'y',
       value: ref('')
     }
+  },
+  {
+    label: {
+      for: 'color',
+      content: 'Color'
+    },
+    input: {
+      type: 'color',
+      id: 'color',
+      value: ref('') || ref("f5f5f5")
+    }
   }
 ]
 
 function addChartValue() {
   const xValue = inputGroupData[0]?.input.value.value ?? ""
   const yValue = inputGroupData[1]?.input.value.value ?? ""
-  chartData.value.push({ x: xValue, y: yValue })
+  const colorValue = inputGroupData[2]?.input.value.value ?? ""
+  chartData.value.push({ x: xValue, y: yValue, color: colorValue })
 }
 
 </script>

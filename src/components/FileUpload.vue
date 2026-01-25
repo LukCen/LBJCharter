@@ -23,7 +23,8 @@ function handleFileSelect(event: Event) {
       // console.dir(results.data)
       uploadedResults.value.forEach((el) => {
         //@ts-ignore
-        chartData.value.push({ "x": el.x as string, "y": el.y as string | number })
+        chartData.value.push({ "x": el.x as string, "y": el.y as string | number, "color": el.color as string || "#f5f5f5" })
+        console.log(chartData.value)
       })
     }
   })
