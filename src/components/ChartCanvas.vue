@@ -17,23 +17,25 @@ const chartBg = {
     if (ctx) {
       ctx.save()
       ctx.globalCompositeOperation = 'destination-over';
-      ctx.fillStyle = '#111'
+      ctx.fillStyle = '#f5f5f5'
       ctx.fillRect(0, 0, chart.width, chart.height)
       ctx.restore()
     }
   }
 }
+// CHART DEFAULTS - settings apply to every chart
+Chart.defaults.font.size = 24
+
+
+// CHART DEFAULTS END
+
 
 // returns values to be used in the 'label' or 'data' parameter inside the Chart instance, in a format expected by different chart types
 // bar - returns an array of objects
 // rest (currently line and pie) - returns an array with two arrays inside - index 0 is X axis, index 1 is Y axis
-const valuesForChart = (type: string) => {
+const valuesForChart = () => {
   const refValues = ref(Object.values(chartData.value))
-  // switch (type) {
-  //   case "bar":
-  //     return refValues.value
-  //   default:
-  //   }
+
   const xValues = computed(() => { return refValues.value.map((p) => p.x) }).value
   const yValues = computed(() => { return refValues.value.map((p) => p.y) }).value
   const colorValues = computed(() => { return refValues.value.map((p) => p.color) }).value
@@ -55,24 +57,28 @@ class ChartConfig {
   barChart() {
     return {
       data: {
-        labels: valuesForChart('bar')[0],
+        labels: valuesForChart()[0],
         datasets: [{
           label: 'Bar Chart',
-          data: valuesForChart('bar')[1],
+          data: valuesForChart()[1],
           borderWidth: 1,
-          backgroundColor: valuesForChart('bar')[2] || "#f5f5f5"
+          backgroundColor: valuesForChart()[2] as string[] || "#f5f5f5"
         }]
       },
       options: {
         scales: {
           y: {
             ticks: {
-              color: "#fff"
+              color: valuesForChart()[1] as string[],
+              textStrokeColor: "#333",
+              textStrokeWidth: 2
             }
           },
           x: {
             ticks: {
-              color: "#fff"
+              color: valuesForChart()[2] as string[],
+              textStrokeColor: "#333",
+              textStrokeWidth: 2
             }
           }
         }
@@ -83,23 +89,18 @@ class ChartConfig {
   pieChart() {
     return {
       data: {
-        // taken from the 'X axis' content - should always be a string
-        labels: valuesForChart('pie')[0],
+        // taken from the 'X axis' content - individual elements should always be a string
+        labels: valuesForChart()[0] as string[],
         datasets: [{
           label: 'Value',
-          // taken from the 'Y axis' content - string or number
-          data: valuesForChart('pie')[1],
-          backgroundColor: getColorsForPieChart(),
-          hoverOffset: 5
+          // taken from the 'Y axis' content - individual elements should always be a string or a number
+          data: valuesForChart()[1] as string[],
+          backgroundColor: valuesForChart()[2] as string[],
+          hoverOffset: 2
         }],
       },
       options: {
-        color: "#fff",
-        plugins: {
-          colors: {
-            enabled: true
-          }
-        }
+        color: valuesForChart()[2] as string[],
       }
     }
   }
@@ -107,12 +108,12 @@ class ChartConfig {
   lineChart() {
     return {
       data: {
-        labels: valuesForChart('line')[0],
+        labels: valuesForChart()[0] as string[],
         datasets: [{
           label: 'Line chart',
-          data: valuesForChart('line')[1],
+          data: valuesForChart()[1] as string[] | number[],
           fill: false,
-          borderColor: "#f6f6f6",
+          borderColor: "#000",
           tension: 0.1
         }]
       },
@@ -120,12 +121,12 @@ class ChartConfig {
         scales: {
           y: {
             ticks: {
-              color: "#fff"
+              color: valuesForChart()[2] as string[]
             }
           },
           x: {
             ticks: {
-              color: "#fff"
+              color: valuesForChart()[2] as string[]
             }
           }
         },
@@ -133,16 +134,11 @@ class ChartConfig {
           point: {
             radius: 8,
             pointStyle: "circle",
-            backgroundColor: getColorsForPieChart(),
+            backgroundColor: valuesForChart()[2] as string[],
             borderColor: "#000"
           }
         },
-        color: "#fff",
-        plugins: {
-          colors: {
-            enabled: true
-          }
-        }
+        color: "#000",
       }
     }
   }
@@ -171,19 +167,14 @@ function showKeys() {
   const ctx = chartModel.value?.getContext('2d')
   if (ctx) {
 
-    // randomly generated colors for the pie charts
-    const bgColors: string[] = []
-    for (let i = 0; i < refValues.value.length; i++) {
-      let newColor = generateRandomColor()
-      bgColors.push(newColor)
-    }
+
     // pie chart
     if (chartType === 'pie') {
       const newChart = new Chart(ctx, {
         type: 'pie',
-        // yes ill clear this up soon - this works just confuses TS due to type macarena above
-        //@ts-ignore
         data: barChartInstance.pieChart().data,
+        // yes ill clear this up soon - this works just confuses TS due to type macarena above
+        //@ts-ignore 
         options: barChartInstance.pieChart().options
       })
       chartInstance.value = newChart
@@ -191,7 +182,6 @@ function showKeys() {
       // bar chart
       const newChart = new Chart(ctx, {
         type: 'bar',
-        //@ts-ignore
         data: barChartInstance.barChart().data,
         options: barChartInstance.barChart().options,
       });
@@ -199,8 +189,6 @@ function showKeys() {
     } else if (chartType === "line") {
       const newChart = new Chart(ctx, {
         type: 'line',
-        // yes ill clear this up soon - this works just confuses TS due to type macarena above
-        //@ts-ignore
         data: barChartInstance.lineChart().data,
         options: barChartInstance.lineChart().options
       })
