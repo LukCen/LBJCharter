@@ -84,13 +84,16 @@ function addChartValue() {
           <TableRow>
             <TableHead class="w-1/4">Values in X axis</TableHead>
             <TableHead class="w-1/4">Values in Y axis</TableHead>
-            <TableHead class="w-1/2">Additional options</TableHead>
+            <TableHead class="w-1/8">Color</TableHead>
+            <TableHead class="w-1/4">Additional options</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow v-for="item, i in chartData" :key="i">
             <TableCell>{{ item.x }}</TableCell>
             <TableCell>{{ item.y }}</TableCell>
+
+            <TableCell :style="{ backgroundColor: item.color }">{{ item.color || "000000" }}</TableCell>
             <TableCell class="flex justify-center gap-4">
               <Button class="btn-delete-entry bg-destructive">Delete item</Button>
               <Button>Edit values</Button>
