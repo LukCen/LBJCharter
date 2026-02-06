@@ -65,6 +65,10 @@ function addChartValue() {
   chartData.value.push({ x: xValue, y: yValue, color: colorValue })
 }
 
+function deleteChartValue(id: number | string) {
+  chartData.value.splice(id as number, 1)
+}
+
 </script>
 
 <template>
@@ -92,11 +96,10 @@ function addChartValue() {
           <TableRow v-for="item, i in chartData" :key="i">
             <TableCell>{{ item.x }}</TableCell>
             <TableCell>{{ item.y }}</TableCell>
-
             <TableCell :style="{ backgroundColor: item.color }">{{ item.color || "000000" }}</TableCell>
             <TableCell class="flex justify-center gap-4">
-              <Button class="btn-delete-entry bg-destructive">Delete item</Button>
-              <Button>Edit values</Button>
+              <Button type="button" @click=" deleteChartValue(i)" class="btn-delete-entry bg-destructive">Delete item</Button>
+              <Button type="button" class="btn-edit-entry bg-accent-foreground">Edit values</Button>
             </TableCell>
           </TableRow>
         </TableBody>
